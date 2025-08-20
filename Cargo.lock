@@ -305,7 +305,7 @@ dependencies = [
  "schnorr_pok",
  "secret_sharing_and_dkg",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
@@ -373,7 +373,7 @@ dependencies = [
  "digest",
  "dock_crypto_utils",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
@@ -536,7 +536,7 @@ dependencies = [
  "schnorr_pok",
  "secret_sharing_and_dkg",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
@@ -618,6 +618,16 @@ dependencies = [
 
 [[package]]
 name = "darling"
+version = "0.20.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fc7f46116c46ff9ab3eb1597a45688b6715c6e628b5c133e288e709a29bcb4ee"
+dependencies = [
+ "darling_core 0.20.11",
+ "darling_macro 0.20.11",
+]
+
+[[package]]
+name = "darling"
 version = "0.21.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08440b3dd222c3d0433e63e097463969485f112baff337dfdaca043a0d760570"
@@ -636,8 +646,22 @@ dependencies = [
  "ident_case",
  "proc-macro2",
  "quote",
- "strsim",
+ "strsim 0.10.0",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "darling_core"
+version = "0.20.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0d00b9596d185e565c2207a0b01f8bd1a135483d02d9b7b0a54b11da8d53412e"
+dependencies = [
+ "fnv",
+ "ident_case",
+ "proc-macro2",
+ "quote",
+ "strsim 0.11.1",
+ "syn 2.0.106",
 ]
 
 [[package]]
@@ -662,6 +686,17 @@ dependencies = [
  "darling_core 0.13.4",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "darling_macro"
+version = "0.20.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fc34b93ccb385b40dc71c6fceac4b2ad23662c7eeb248cf10d529b7e055b6ead"
+dependencies = [
+ "darling_core 0.20.11",
+ "quote",
+ "syn 2.0.106",
 ]
 
 [[package]]
@@ -762,14 +797,14 @@ dependencies = [
  "itertools 0.12.1",
  "num",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "sha2",
  "zeroize",
 ]
 
 [[package]]
 name = "dock_crypto_wasm"
-version = "0.21.0"
+version = "0.22.0"
 dependencies = [
  "ark-bls12-381",
  "ark-ec",
@@ -796,7 +831,7 @@ dependencies = [
  "serde",
  "serde-wasm-bindgen 0.6.5",
  "serde_json",
- "serde_with",
+ "serde_with 3.14.0",
  "smc_range_proof",
  "vb_accumulator",
  "wasm-bindgen",
@@ -1203,7 +1238,7 @@ dependencies = [
  "itertools 0.12.1",
  "schnorr_pok",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
@@ -1496,7 +1531,7 @@ dependencies = [
  "itertools 0.12.1",
  "schnorr_pok",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "sha3",
  "zeroize",
 ]
@@ -1640,7 +1675,7 @@ dependencies = [
  "saver",
  "schnorr_pok",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "sha3",
  "short_group_sig",
  "smc_range_proof",
@@ -1955,7 +1990,7 @@ dependencies = [
  "dock_merlin",
  "legogroth16",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
@@ -1972,7 +2007,7 @@ dependencies = [
  "digest",
  "dock_crypto_utils",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
@@ -1997,7 +2032,7 @@ dependencies = [
  "dock_crypto_utils",
  "schnorr_pok",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
@@ -2074,7 +2109,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "678b5a069e50bf00ecd22d0cd8ddf7c236f68581b03db652061ed5eb13a312ff"
 dependencies = [
  "serde",
- "serde_with_macros",
+ "serde_with_macros 1.5.2",
+]
+
+[[package]]
+name = "serde_with"
+version = "3.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f2c45cd61fefa9db6f254525d46e392b852e0e61d9a1fd36e5bd183450a556d5"
+dependencies = [
+ "serde",
+ "serde_derive",
+ "serde_with_macros 3.14.0",
 ]
 
 [[package]]
@@ -2087,6 +2133,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "serde_with_macros"
+version = "3.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "de90945e6565ce0d9a25098082ed4ee4002e047cb59892c318d66821e14bb30f"
+dependencies = [
+ "darling 0.20.11",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.106",
 ]
 
 [[package]]
@@ -2143,7 +2201,7 @@ dependencies = [
  "schnorr_pok",
  "secret_sharing_and_dkg",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
@@ -2193,6 +2251,12 @@ name = "strsim"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
+
+[[package]]
+name = "strsim"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 
 [[package]]
 name = "subtle"
@@ -2425,7 +2489,7 @@ dependencies = [
  "schnorr_pok",
  "secret_sharing_and_dkg",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "short_group_sig",
  "zeroize",
 ]
@@ -2445,7 +2509,7 @@ dependencies = [
  "itertools 0.12.1",
  "secret_sharing_and_dkg",
  "serde",
- "serde_with",
+ "serde_with 1.14.0",
  "zeroize",
 ]
 
