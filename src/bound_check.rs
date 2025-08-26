@@ -3,8 +3,12 @@ use blake2::Blake2b512;
 use bulletproofs_plus_plus::prelude::SetupParams;
 use js_sys::Uint8Array;
 use proof_system::prelude::{
-    bound_check_smc::SmcParamsAndCommitmentKey,
-    bound_check_smc_with_kv::SmcParamsAndCommitmentKeyAndSecretKey, generate_snark_srs_bound_check,
+    bound_check_smc::SmcParamsAndCommitmentKey, // ← plain
+    bound_check_smc_with_kv::{
+        SmcParamsKVAndCommitmentKey, // ← NEW
+        SmcParamsKVAndCommitmentKeyAndSecretKey,
+    },
+    generate_snark_srs_bound_check,
 };
 
 use crate::{
@@ -16,7 +20,8 @@ use zeroize::Zeroize;
 
 pub(crate) type BppSetupParams = SetupParams<G1Affine>;
 pub(crate) type SmcParams = SmcParamsAndCommitmentKey<Bls12_381>;
-pub(crate) type SmcParamsAndSk = SmcParamsAndCommitmentKeyAndSecretKey<Bls12_381>;
+pub(crate) type SmcParamsKV = SmcParamsKVAndCommitmentKey<G1Affine>;
+pub(crate) type SmcParamsKVAndSk = SmcParamsKVAndCommitmentKeyAndSecretKey<G1Affine>;
 
 /// Setup snark for proving bounds and generate compressed or uncompressed SNARK proving key
 #[wasm_bindgen(js_name = boundCheckSnarkSetup)]
@@ -87,30 +92,27 @@ pub fn bound_check_smc_with_kv_setup(
 ) -> Result<js_sys::Array, JsValue> {
     set_panic_hook();
     let mut rng = get_seeded_rng();
-    let (smc_setup_params, sk) = SmcParams::new::<_, Blake2b512>(&mut rng, &label, base);
-    smc_setup_params
-        .verify()
-        .map_err(|e| JsValue::from(&format!("Param validation failed with error: {:?}", e)))?;
+    let (smc_setup_params, sk) = SmcParamsKV::new::<_, Blake2b512>(&mut rng, &label, base);
     let setup = js_sys::Array::new();
     let smc_params = if return_uncompressed {
-        obj_to_uint8array_uncompressed!(&smc_setup_params, "SmcParamsAndCommitmentKey")
+        obj_to_uint8array_uncompressed!(&smc_setup_params, "SmcParamsKVAndCommitmentKey")
     } else {
-        obj_to_uint8array!(&smc_setup_params, false, "SmcParamsAndCommitmentKey")
+        obj_to_uint8array!(&smc_setup_params, false, "SmcParamsKVAndCommitmentKey")
     };
-    let smc_setup_params_with_sk = SmcParamsAndSk {
+    let smc_setup_params_with_sk = SmcParamsKVAndSk {
         params_and_comm_key: smc_setup_params,
         sk,
     };
     let smc_params_with_sk = if return_uncompressed {
         obj_to_uint8array_uncompressed!(
             &smc_setup_params_with_sk,
-            "SmcParamsAndCommitmentKeyAndSecretKey"
+            "SmcParamsKVAndCommitmentKeyAndSecretKey"
         )
     } else {
         obj_to_uint8array!(
             &smc_setup_params_with_sk,
             false,
-            "SmcParamsAndCommitmentKeyAndSecretKey"
+            "SmcParamsKVAndCommitmentKeyAndSecretKey"
         )
     };
     setup.push(&smc_params);
@@ -138,16 +140,26 @@ pub fn decompress_smc_params(params: Uint8Array) -> Result<Uint8Array, JsValue> 
     ))
 }
 
-#[wasm_bindgen(js_name = decompressSmcParamsAndSk)]
+/// Decompress EC points in set-membership based range proof
+#[wasm_bindgen(js_name = decompressSmcParamsKV)]
+pub fn decompress_smc_params_kv(params: Uint8Array) -> Result<Uint8Array, JsValue> {
+    let params = obj_from_uint8array!(SmcParamsKV, params, false, "SmcParamsKVAndCommitmentKey");
+    Ok(obj_to_uint8array_uncompressed!(
+        &params,
+        "SmcParamsKVAndCommitmentKey"
+    ))
+}
+
+#[wasm_bindgen(js_name = decompressSmcParamsKVAndSk)]
 pub fn decompress_smc_params_and_sk(params: Uint8Array) -> Result<Uint8Array, JsValue> {
     let params = obj_from_uint8array!(
-        SmcParamsAndSk,
+        SmcParamsKVAndSk,
         params,
         false,
-        "SmcParamsAndCommitmentKeyAndSecretKey"
+        "SmcParamsKVAndCommitmentKeyAndSecretKey"
     );
     Ok(obj_to_uint8array_uncompressed!(
         &params,
-        "SmcParamsAndCommitmentKeyAndSecretKey"
+        "SmcParamsKVAndCommitmentKeyAndSecretKey"
     ))
 }
