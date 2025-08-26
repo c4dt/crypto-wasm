@@ -35,11 +35,14 @@ import {
   generateSetupParamForSmcParams,
   generateBoundCheckSmcStatementFromParamRefs,
   boundCheckSmcWithKVSetup,
-  decompressSmcParamsAndSk,
   generateBoundCheckSmcWithKVProverStatement,
   generateBoundCheckSmcWithKVVerifierStatement,
   generateBoundCheckSmcWithKVProverStatementFromParamRefs, generateBoundCheckSmcWithKVVerifierStatementFromParamRefs,
-  generateBoundCheckSmcWithKVWitness, generateSetupParamForSmcParamsAndSk, generatePoKBBSPlusSignatureProverStatement
+  generateBoundCheckSmcWithKVWitness, generatePoKBBSPlusSignatureProverStatement,
+  decompressSmcParamsKV,
+  decompressSmcParamsKVAndSk,
+  generateSetupParamForSmcParamsKV,
+  generateSetupParamForSmcParamsKVAndSk
 } from "../../lib";
 
 import {checkResult, getRevealedUnrevealed, stringToBytes} from "./util";
@@ -320,8 +323,9 @@ describe("Prove and verify bounds on signed messages", () => {
 
   it("decompress set-membership check with keyed verification params", () => {
     console.time("set-membership check params decompressed");
-    smcWithKVProverParams = decompressSmcParams(smcWithKVSetup[0]);
-    smcWithKVVerifierParams = decompressSmcParamsAndSk(smcWithKVSetup[1]);
+    smcWithKVSetup = boundCheckSmcWithKVSetup(stringToBytes("test"), base, false);
+    smcWithKVProverParams = decompressSmcParamsKV(smcWithKVSetup[0]);
+    smcWithKVVerifierParams = decompressSmcParamsKVAndSk(smcWithKVSetup[1]);
     console.timeEnd("set-membership check params decompressed");
   }, 50000);
 
@@ -397,6 +401,6 @@ describe("Prove and verify bounds on signed messages", () => {
   }, 10000);
 
   it("create and verify a proof over multiple signed messages using set-membership check with keyed-verification", () => {
-    checkOverMultipleMessages(generateSetupParamForSmcParams, generateSetupParamForSmcParamsAndSk, generateBoundCheckSmcWithKVProverStatementFromParamRefs, generateBoundCheckSmcWithKVVerifierStatementFromParamRefs, generateBoundCheckSmcWithKVWitness, smcWithKVProverParams, smcWithKVVerifierParams)
+    checkOverMultipleMessages(generateSetupParamForSmcParamsKV, generateSetupParamForSmcParamsKVAndSk, generateBoundCheckSmcWithKVProverStatementFromParamRefs, generateBoundCheckSmcWithKVVerifierStatementFromParamRefs, generateBoundCheckSmcWithKVWitness, smcWithKVProverParams, smcWithKVVerifierParams)
   }, 10000);
 });

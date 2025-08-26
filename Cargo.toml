@@ -1,11 +1,11 @@
 [package]
 authors = ["Dock.io", "Tobias Looker <tobias.looker@mattr.global>", "Mike Lodder <redmike7@gmail.com>"]
 description = "WASM binding to Dock's crypto lib"
-edition = "2024"
+edition = "2021"
 license = "Apache-2.0"
 name = "dock_crypto_wasm"
 repository = "https://github.com/docknetwork/crypto-wasm"
-version = "0.22.0"
+version = "0.21.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -20,7 +20,7 @@ js-sys = "0.3"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0"}
 serde-wasm-bindgen = "0.6.5"
-wasm-bindgen = "= 0.2.100"
+wasm-bindgen = "= 0.2.86"
 dlmalloc = { version = "0.2.10", features = ["global"], optional = true }
 serde_with = { version = "3.14.0", default-features = false, features = ["macros"] }
 
@@ -44,13 +44,13 @@ ark-relations = { version = "^0.4.0", default-features = false }
 ark-bls12-381 = { version = "^0.4.0", default-features = false, features = [ "curve" ] }
 ark-serialize = { version = "^0.4.1", default-features = false, features = [ "derive" ] }
 blake2 = { version = "0.10.6", default-features = false }
-getrandom = { version = "0.2", features = ["js"] }
+getrandom = { version = "0.2.12", features = ["js"] }
 ark-std = { version = "^0.4.0", default-features = false }
-zeroize = { version = "^1.8.1", features = ["derive"] }
+zeroize = { version = "1.7.0", features = ["derive"] }
 
 [dev-dependencies]
-wasm-bindgen-test = "^0.3.50"
-web-sys = { version = "^0.3.77", features = ["console"] }
+wasm-bindgen-test = "0.3.33"
+web-sys = { version = "0.3", features = ["console"] }
 
 [profile.dev]
 opt-level = 1
